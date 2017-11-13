@@ -1,0 +1,38 @@
+<rt-import name="default" as="NavLink" from="./link"/>
+<nav className="navbar navbar-inverse navbar-fixed-top"
+     role="navigation">
+  <div className="navbar-header">
+    <button type="button" className="navbar-toggle"
+	    data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+       </button>
+    <NavLink to="/" className="navbar-brand">
+      Encompass
+    </NavLink>
+  </div>
+  <ul class="nav navbar-right top-nav">
+    <li class="dropdown" rt-if="this.props.authenticated">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	<i class="fa fa-user"></i> Logged in user <b class="caret"></b>
+      </a>
+    </li>
+  </ul>
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav" rt-if="!this.props.authenticated">
+      <NavLink to="/login">
+	Login
+      </NavLink>
+    </ul>
+    <ul class="nav navbar-nav side-nav" rt-if="this.props.authenticated">
+      <NavLink to="/account">
+	My account
+      </NavLink>
+      <NavLink to="/logout">
+	Logout
+      </NavLink>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,12 @@
+/*
+** Comment me
+*/
+
+export const ADD_FLASH_MESSAGE = 'ADD_FLASH_MESSAGE';
+export const DELETE_FLASH_MESSAGE = 'DELETE_FLASH_MESSAGE';
+export const DELETE_FLASH_MESSAGES = 'DELETE_FLASH_MESSAGES';
+export const FLUSH_FLASH_MESSAGES = 'FLUSH_FLASH_MESSAGES';
+
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const LOGOUT = 'LOGOUT';
