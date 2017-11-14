@@ -8,7 +8,7 @@ import { Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
 /* Security route */
-import AuthorizedRoute from '../security'
+import SecureRoute from '../security'
 
 /* Sub routing */
 import Account from './account';
@@ -25,7 +25,7 @@ import { LOGIN_URL } from '../config.js'
 
 const Root = props => (
   <div id="wrapper">
-    <MainNavigation authenticated={ props.logged } />
+    <MainNavigation />
     <div id="page-wrapper">
       <FlashMessagesList />
       <div className="container-fluid">
@@ -34,21 +34,11 @@ const Root = props => (
           <Route path="/logout" exact component={LogoutPage} />
           <Route path="/login" exact component={
                  () => <LoginForm schema_url={ LOGIN_URL } />} />
-          <AuthorizedRoute path="/account" component={ Account } />
+          <SecureRoute path="/account" component={ Account } />
         </Switch>
       </div>
     </div>
   </div>
 )
 
-Root.propTypes = {
-    logged: PropTypes.bool.isRequired,
-    router: PropTypes.object.isRequired
-};
-
-const stateToProps = state => ({
-    logged: state.authReducer.logged,
-    router: state.router
-})
-
-export default connect(stateToProps)(Root)
+export default Root

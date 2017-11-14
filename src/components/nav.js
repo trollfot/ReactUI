@@ -5,6 +5,7 @@
 import React from 'react'
 import template from './navigation.rt'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 
 
 class MainNavigation extends React.Component {
@@ -17,5 +18,8 @@ MainNavigation.propTypes = {
     authenticated: PropTypes.bool.isRequired
 };
 
+const stateToProps = state => ({
+    authenticated: state.authReducer.logged,
+})
 
-export default MainNavigation
+export default connect(stateToProps)(MainNavigation)

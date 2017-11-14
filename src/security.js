@@ -5,52 +5,43 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { Redirect } from 'react-router'
 import PropTypes from 'prop-types';
 import { FLASH_WARNING, addTemporaryMessage } from './actions/flash'
 
 
 const Unauthorized = props => {
     props.flash(FLASH_WARNING, "You are not allowed here");
-    props.redirect(props.to);
-    return null;
+    return <Redirect to={ props.to } />;
 }
 
 
 Unauthorized.propTypes = {
     to: PropTypes.string.isRequired,
     flash: PropTypes.func.isRequired,
-    redirect: PropTypes.func.isRequired,
 };
 
 
-const AuthorizedRoute = props => {
-    const {
-	component: Component,
-	push,
-	addTemporaryMessage,
-	logged,
-	...rest } = props
-    return (
-	    <Route {...rest} render={props => {
-		return logged
-		    ? <Component {...props} />
-		    : <Unauthorized to="/login"
-		                    flash={ addTemporaryMessage }
-		                    redirect={ push } />
-	    }} />
-    )
+class SecureRoute extends Route {
+    render() {
+        if (!this.props.authenticated) {
+            return <Unauthorized to="/login"
+	              flash={this.props.addTemporaryMessage }/>
+        } else {
+            return <this.props.component />
+        }
+    }
 }
 
-
-AuthorizedRoute.propTypes = {
+SecureRoute.propTypes = {
+    authenticated: PropTypes.bool.isRequired,
     addTemporaryMessage: PropTypes.func.isRequired,
-    logged: PropTypes.bool.isRequired,
 };
 
 const stateToProps = state => ({
-    logged: state.authReducer.logged,
+    authenticated: state.authReducer.logged,
 })
 
-export default connect(
-    stateToProps, { push, addTemporaryMessage })(AuthorizedRoute)
+export default connect(stateToProps, { addTemporaryMessage })(SecureRoute)
+
+

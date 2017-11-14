@@ -24,6 +24,14 @@ module.exports = {
 		test: /\.rt$/,
 		loader: "react-templates-loader?modules=amd"
 	    },
-	]
-    },
+	    {
+		test: /\.less$/,
+                loader: ["style-loader", "css-loader", "less-loader"]
+            },
+	    {
+		test: /\.css$/,
+                loader: ["style-loader", "css-loader"]
+            }
+        ]
+    }
 }
