@@ -283,3 +283,7 @@ ul.alert-dropdown {
     font-size: 1em;
     color: rgba(0, 0, 0, .4);
 }
+
+.tab-content {
+    padding: 0.8em 1em;
+}

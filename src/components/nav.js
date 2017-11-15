@@ -20,6 +20,7 @@ MainNavigation.propTypes = {
 
 const stateToProps = state => ({
     authenticated: state.authReducer.logged,
+    router: state.router,
 })
 
 export default connect(stateToProps)(MainNavigation)

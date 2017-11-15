@@ -17,7 +17,7 @@ const Account = () => (
     <aside>
       <UserNav />
     </aside>
-    <div className="primary-content">
+    <div className="primary-content tab-content">
       <Switch>
         <Route path="/account" exact component={BrowseUsersPage} />
         <Route path="/account/profile" component={UserProfilePage} />

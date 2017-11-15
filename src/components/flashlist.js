@@ -6,20 +6,24 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import FlashMessage from './flash'
 import { deleteFlashMessage } from '../actions/flash';
 
+import './flash.css';
 
-class FlashMessagesList extends React.Component {
-    render() {
-      return this.props.messages.map(message =>
-	<FlashMessage key={message.id}
-		      message={message}
-		      deleteFlashMessage={this.props.deleteFlashMessage} />
-    );
-  }
-}
+
+const FlashMessagesList = props => (
+       <TransitionGroup className="flashmessages">
+          {props.messages.map((message, i) => (
+	    <CSSTransition timeout={{ enter: 1000, exit: 800 }}
+              classNames="fade" key={i}>
+              <FlashMessage message={message}
+		deleteFlashMessage={props.deleteFlashMessage} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+)
 
 
 FlashMessagesList.propTypes = {
@@ -28,11 +32,9 @@ FlashMessagesList.propTypes = {
 }
 
 
-const stateToProps = state => {
-    return {
+const stateToProps = state => ({
       messages: state.flashReducer
-    }
-}
+})
 
 
 export default connect(

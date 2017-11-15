@@ -7,27 +7,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactLoading from 'react-loading';
 
-import { NavLink } from 'react-router-dom';
+import NavLink from "./link";
 import { PROFILE_URL, ENTITYQUERY_URL } from '../config';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 
 
 export const UserNav = () => (
-  <header>
-    <h2>Mes options</h2>
-    <nav>
-      <NavLink to="/account" exact activeClassName="active">
+  <div className="user-nav">
+     <h2>Mes options</h2>
+     <ul className="nav nav-tabs">
+	<NavLink to="/account">
         Accueil du compte
       </NavLink>
-      <NavLink to="/account/profile" activeClassName="active">
+      <NavLink to="/account/profile">
 	Profil
       </NavLink>
-      <NavLink to="/account/assets" activeClassName="active">
+      <NavLink to="/account/assets">
 	Assets
       </NavLink>
-    </nav>
-  </header>
+    </ul>
+  </div>
 )
 
 
@@ -59,13 +59,11 @@ export class UserAssets extends React.Component {
     }
 
     onChange = (page) => {
-	axios.post(ENTITYQUERY_URL, JSON.stringify({
-	    start: (page - 1) * this.state.batchSize,
-	    size: this.state.batchSize,
-	}), {
-	    headers: {
-		'Content-Type': 'application/json'
-	    }
+	axios.get(ENTITYQUERY_URL, {
+	    params: {
+		start: (page - 1) * this.state.batchSize,
+		size: this.state.batchSize,
+	    },
 	}).then((response) => {
 	    const {total,
 		   start,

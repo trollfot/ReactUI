@@ -1,3 +1,7 @@
+/*
+** Comment me
+*/
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -7,17 +11,21 @@ import { connect } from 'react-redux'
 class NavLink extends React.Component {
     render() {
 	const {
-	    active_path,
-	    dispatch,
+	    rootNode,
 	    ...rest
 	} = this.props
 
-        var isActive = active_path === this.props.to;
-        var className = isActive ? 'active' : '';
-
+	var active = ''
+	var path = this.context.router.route.location.pathname;
+	if (path == this.props.to){
+	    active = 'active';
+	}
+	else if (path.startsWith(this.props.to + '/') && rootNode) {
+	    active = 'active';
+	}
         return(
-	    <li className={className}>
-              <Link {...rest}>
+	    <li className={active}>
+	      <Link {...rest}>
                 {this.props.children}
               </Link>
 	    </li>
@@ -29,8 +37,14 @@ NavLink.contextTypes = {
     router: PropTypes.object
 };
 
-const stateToProps = state => ({
-    active_path: state.router.location.pathname
-})
+NavLink.propTypes = {
+    rootNode: PropTypes.bool.isRequired,
+    className: PropTypes.string.isRequired
+}
 
-export default connect(stateToProps)(NavLink);
+NavLink.defaultProps = {
+    rootNode: false,
+    className: ''
+}
+
+export default NavLink;

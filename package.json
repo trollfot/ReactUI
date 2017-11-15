@@ -43,6 +43,7 @@
       "redux-promise": "^0.5.3",
       "shortid": "^2.2.8",
       "react-loading": "^1.0.1",
-      "rc-pagination": "^1.12.11"
+      "rc-pagination": "^1.12.11",
+      "react-transition-group": "^2.2.1"
   }
 }

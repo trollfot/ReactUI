@@ -22,12 +22,12 @@
   </ul>
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav" rt-if="!this.props.authenticated">
-      <NavLink to="/login">
+      <NavLink to="/login" rootNode="{ true }">
 	Login
       </NavLink>
     </ul>
     <ul class="nav navbar-nav side-nav" rt-if="this.props.authenticated">
-      <NavLink to="/account">
+      <NavLink to="/account" rootNode="{ true }">
 	My account
       </NavLink>
       <NavLink to="/logout">
