@@ -4,19 +4,40 @@
 
 import axios from 'axios'
 import React from 'react';
-import Form from 'react-jsonschema-form';
+import ReactDOM from 'react-dom';
 import ReactLoading from 'react-loading';
+import Form from 'react-jsonschema-form';
 
-import { login } from '../actions/auth'
-import { FLASH_INFO } from '../actions/flash'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import NavLink from "./link";
+import { ENTITYADD_URL } from '../config';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 
-    
-class LoginForm extends React.Component {
+
+export const AssetsNav = () => (
+  <div className="assets-nav">
+     <h2>Mes options</h2>
+     <ul className="nav nav-tabs">
+      <NavLink to="/assets">
+          Accueil
+      </NavLink>
+      <NavLink to="/assets/create">
+	Create new asset
+      </NavLink>
+    </ul>
+  </div>
+)
+
+export const AssetsHome = props => (
+  <div>Welcome to your assets page</div>
+)
+
+
+export class AssetsAdd extends React.Component {
  
     constructor(props) {
-	super(props);
+	super(props)
 	this.state = {
 	    schema: null,
 	    errors: null
@@ -41,8 +62,10 @@ class LoginForm extends React.Component {
     }
 
     submit(form) {
-        this.props.login(form.formData).then(value => {
-	    this.props.push('/');
+	axios.put(ENTITYADD_URL, form.formData, {
+	    headers: {
+		'Content-Type': 'application/json'
+	    }
 	})
     }
 
@@ -55,4 +78,6 @@ class LoginForm extends React.Component {
     }
 }
 
-export default connect(null, { push, login })(LoginForm)
+AssetsAdd.defaultProps = {
+    schema_url: ENTITYADD_URL
+}

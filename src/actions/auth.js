@@ -16,6 +16,7 @@ const authHeader = () => ({
     'Authorization': 'Bearer ' + localStorage.getItem('token')
 })
 
+
 const authSuccess = token => {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;

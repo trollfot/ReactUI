@@ -30,6 +30,9 @@
       <NavLink to="/account" rootNode="{ true }">
 	My account
       </NavLink>
+      <NavLink to="/assets" rootNode="{ true }">
+	My assets
+      </NavLink>
       <NavLink to="/logout">
 	Logout
       </NavLink>
