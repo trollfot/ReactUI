@@ -6,8 +6,9 @@ module.exports = {
 	filename: "bundle.js"
     },
     devServer: {
-	inline: true,
-	port: 8080
+	host: '0.0.0.0',
+        port: '8800',
+        disableHostCheck: true
     },
     devtool: "source-map",
     module : {
