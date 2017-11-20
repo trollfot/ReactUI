@@ -8,6 +8,7 @@ import {
     AssetsNav,
     AssetsAdd,
     AssetsHome,
+    AssetsBrowser
 } from '../components/assets'
 
 
@@ -20,6 +21,7 @@ const Assets = () => (
       <Switch>
         <Route path="/assets" exact component={AssetsHome} />
         <Route path="/assets/create" component={AssetsAdd} />
+	<Route path="/assets/browse" component={AssetsBrowser} />
       </Switch>
     </div>
   </div>

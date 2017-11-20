@@ -8,25 +8,20 @@ import ReactDOM from 'react-dom';
 import ReactLoading from 'react-loading';
 
 import NavLink from "./link";
-import { PROFILE_URL, ENTITYQUERY_URL } from '../config';
-import Pagination from 'rc-pagination';
-import 'rc-pagination/assets/index.css';
+import { PROFILE_URL } from '../config';
 
 
 export const UserNav = () => (
   <div className="user-nav">
      <h2>Mes options</h2>
      <ul className="nav nav-tabs">
-	<NavLink to="/account">
-        Accueil du compte
-      </NavLink>
-      <NavLink to="/account/profile">
-	Profil
-      </NavLink>
-      <NavLink to="/account/assets">
-	Assets
-      </NavLink>
-    </ul>
+       <NavLink to="/account">
+         Accueil du compte
+       </NavLink>
+       <NavLink to="/account/profile">
+	 Profil
+       </NavLink>
+     </ul>
   </div>
 )
 
@@ -38,88 +33,6 @@ export const BrowseUsersPage = () => (
     </div>
   </div>
 )
-
-
-export class UserAssets extends React.Component {
-
-    constructor(props) {
-	super(props);
-	this.state = {
-	    batchSize: 3,
-	    currentPage: 0,
-	    total: 0,
-	    items: null
-	}
-    }
-
-    componentDidMount() {
-	if (this.state.items == null) {
-	    this.onChange(1);
-	}
-    }
-
-    onChange = (page) => {
-	axios.get(ENTITYQUERY_URL, {
-	    params: {
-		start: (page - 1) * this.state.batchSize,
-		size: this.state.batchSize,
-	    },
-	}).then((response) => {
-	    const {total,
-		   start,
-		   size,
-		   items } = response.data
-	    
-	    this.setState({
-		batchSize: size,
-		total: total,
-		items: items,
-		currentPage: page,
-	    })
-	    console.log(this.state);
-	}).catch((err) => {
-	    console.log(err)
-	})
-    }
-
-    render() {
-	if (this.state.items != null) {
-          return (
-	     <div>
-	        <table className="table table-bordered table-striped">
-		  <thead>
-		    <tr>
-		      <th>Name</th>
-		      <th>Address</th>
-		      <th>Work force</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    { this.state.items.map((item, index) => (
-		      <tr key={index}>
-		        <td>{item.name}</td>
-		        <td>{item.address}</td>
-		        <td>{item.taskforce}</td>
-		      </tr>
-		    ))}
-		  </tbody>
-		</table>
-                {(this.state.batchSize < this.state.total) &&
-		    <Pagination
-                       onChange={this.onChange}
-		       showTotal={(total, range) => `${range[0]} - ${range[1]} / ${total} items`}
-		       defaultPageSize={this.state.batchSize}
-                       current={this.state.currentPage}
-                       total={this.state.total}
-                       showLessItems
-                      />
-		}
-	      </div>
-	    )
-        }
-	return <ReactLoading type="bubbles" color="#444" />
-    }
-}
 
 
 export class UserProfilePage extends React.Component {
