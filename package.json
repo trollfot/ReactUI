@@ -46,7 +46,7 @@
         "redux-promise": "^0.5.3",
         "redux-thunk": "^2.2.0",
         "shortid": "^2.2.8",
-        "react-xhr-uploader": "^0.4.4",
-	"react-websocket": "^1.2.0"
+        "rc-upload": "^2.4.4",
+        "react-progressbar": "^15.4.1"
     }
 }

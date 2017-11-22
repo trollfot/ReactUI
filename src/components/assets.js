@@ -7,14 +7,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactLoading from 'react-loading';
 import Form from 'react-jsonschema-form';
-
-import { connect } from 'react-redux'
-import NavLink from "./link";
-import { ASSETADD_URL, ASSETQUERY_URL } from '../config';
-import { addTemporaryMessage, FLASH_INFO } from '../actions/flash'
-
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
+
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
+
+import NavLink from "./link";
+import { ASSETADD_URL, ASSETBROWSE_URL } from '../config';
+import { addTemporaryMessage, FLASH_INFO } from '../actions/flash'
 
 
 export const AssetsNav = () => (
@@ -34,7 +35,8 @@ export const AssetsNav = () => (
   </div>
 )
 
-export const AssetsHome = props => (
+
+export const AssetsHome = () => (
   <div>Welcome to your assets page</div>
 )
 
@@ -112,12 +114,12 @@ export class AssetsBrowser extends React.Component {
 
     componentDidMount() {
 	if (this.state.items == null) {
-	    this.onChange(1);
+	    this.onChange(1);  // Init as the first page.
 	}
     }
 
     onChange = (page) => {
-	axios.get(ASSETQUERY_URL, {
+	axios.get(ASSETBROWSE_URL, {
 	    params: {
 		start: (page - 1) * this.state.batchSize,
 		size: this.state.batchSize,
@@ -155,7 +157,11 @@ export class AssetsBrowser extends React.Component {
 		  <tbody>
 		    { this.state.items.map((asset, index) => (
 		      <tr key={index}>
-		        <td>{asset.data.name}</td>
+		        <td>
+			   <Link to={`/assets/${asset.key}`}>
+			     {asset.data.name}
+			   </Link>
+			</td>
 		        <td>{asset.data.address}</td>
 		        <td>{asset.data.workforce}</td>
 		      </tr>
@@ -179,5 +185,3 @@ export class AssetsBrowser extends React.Component {
 	return <ReactLoading type="bubbles" color="#444" />
     }
 }
-
-

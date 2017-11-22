@@ -27,9 +27,8 @@ class SecureRoute extends Route {
         if (!this.props.authenticated) {
             return <Unauthorized to="/login"
 	              flash={this.props.addTemporaryMessage }/>
-        } else {
-            return <this.props.component />
         }
+        return <this.props.component />
     }
 }
 

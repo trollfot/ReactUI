@@ -4,7 +4,7 @@
 
 import axios from 'axios'
 import { LOGIN_URL } from '../config'
-import { FLASH_INFO, FLASH_ERROR, addFlashMessage } from './flash'
+import { FLASH_INFO, FLASH_ERROR, addTemporaryMessage } from './flash'
 import {
     AUTH_SUCCESS,
     AUTH_FAIL,
@@ -12,7 +12,7 @@ import {
 } from './types'
 
 
-const authHeader = () => ({
+export const authHeader = () => ({
     'Authorization': 'Bearer ' + localStorage.getItem('token')
 })
 
@@ -49,10 +49,10 @@ export function login(data) {
 	    }
 	}).then(response => {
 	    dispatch(authSuccess(response.data.token));
-	    dispatch(addFlashMessage(FLASH_INFO, "Logged in !"));
+	    dispatch(addTemporaryMessage(FLASH_INFO, "Logged in !"));
 	}).catch(error => {
 	    dispatch(authFail());
-	    dispatch(addFlashMessage(FLASH_ERROR, error.message));
+	    dispatch(addTemporaryMessage(FLASH_ERROR, error.message));
 	    throw error
 	});
     }

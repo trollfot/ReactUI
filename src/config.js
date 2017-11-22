@@ -11,16 +11,16 @@ export const LOGIN_URL = MAIN_URL + "/account/login"
 export const SIGNIN_URL = MAIN_URL + "/account/register"
 export const PROFILE_URL = MAIN_URL + "/account/info"
 
-export const ASSETQUERY_URL = MAIN_URL + "/assets/query"
+export const ASSETBROWSE_URL = MAIN_URL + "/assets/browse"
 export const ASSETADD_URL = MAIN_URL + "/assets/create"
-export const ASSETUPLOAD_URL = MAIN_URL + "/assets/upload"
-export const ASSETDOWNLOAD_URL = MAIN_URL + "/assets/download"
+export const ASSETMANAGE_URL = MAIN_URL + "/assets/manage"
+export const ASSETCONSULT_URL = MAIN_URL + "/assets/asset"
 
 export const WEBSOCKET_BASE_URL = WS_URL + "/live"
 
 
-export const getWebsocketURL = (endpoint, action) => {
-    let location = WEBSOCKET_BASE_URL + '/' + endpoint + '/' + action;
+export const getWebsocketURL = (endpoint) => {
+    let location = WEBSOCKET_BASE_URL + endpoint;
     let jwt = localStorage.getItem('token');
     if (jwt != null) {
 	location += '?' + encodeData({jwt: jwt});

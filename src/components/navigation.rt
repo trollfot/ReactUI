@@ -33,9 +33,6 @@
       <NavLink to="/assets" rootNode="{ true }">
 	My assets
       </NavLink>
-      <NavLink to="/upload" rootNode="{ true }">
-	Upload files
-      </NavLink>
       <NavLink to="/logout">
 	Logout
       </NavLink>
