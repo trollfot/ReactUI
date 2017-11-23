@@ -136,7 +136,6 @@ export class AssetsBrowser extends React.Component {
 		items: items,
 		currentPage: page,
 	    })
-	    console.log(this.state);
 	}).catch((err) => {
 	    console.log(err)
 	})

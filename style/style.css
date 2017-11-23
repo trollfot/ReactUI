@@ -287,3 +287,41 @@ ul.alert-dropdown {
 .tab-content {
     padding: 0.8em 1em;
 }
+
+.callout {
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin: 10px 0 6px 0;
+    border: 1px solid #eee;
+}
+
+.callout-container {
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.callout-info {
+    border-left-color: #1b809e;
+    border-left-width: 5px;
+}
+
+.callout .clipboard {
+    top: -16px;
+    border-top-right-radius: 0;
+}
+
+.status-fail {
+    color: #b20000;
+}
+
+.status-ok {
+    color: #50ab00;
+}
+
+.status-ongoing {
+    color: #666;
+}
+
+.bg-ongoing {
+    background-color: #e8f2f7;
+}

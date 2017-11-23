@@ -10,7 +10,6 @@ import {
 const flashReducer = (state = [] , action) => {
     switch (action.type) {
     case ADD_FLASH_MESSAGE:
-	console.log(action.message)
 	return [...state, action.message]
 
     case DELETE_FLASH_MESSAGE:

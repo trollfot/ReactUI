@@ -1,0 +1,43 @@
+<rt-import name="default" as="Progress" from="react-progressbar" />
+<rt-import name="default" as="Upload" from="rc-upload" />
+<rt-import name="*" as="classNames" from="classnames" />
+<rt-import name="CANCELLED" from="./states" />
+<rt-import name="UPLOADED" from="./states" />
+<div>
+  <Upload rt-props="this.uploaderProps" ref="inner">
+    <a className="btn btn-primary">Chose files</a>
+  </Upload>
+  <div rt-repeat="key in Object.keys(this.state.uploadedFiles)" key="{key}">
+
+    <div className="{ classNames('callout callout-item', {
+           'bg-success': this.state.uploadedFiles[key].status == UPLOADED,
+           'bg-danger': this.state.uploadedFiles[key].status == CANCELLED,
+	   'bg-ongoing': !this.state.uploadedFiles[key].status
+         }) }">
+    
+      <div className="clipboard">
+	<button type="button" className="close"
+		onClick="()=> { this.close(key) }"
+		aria-label="Close">
+	  <span aria-hidden="true">×</span>
+	</button>
+      </div>
+
+      <h4>
+	<i className="status-ok glyphicon glyphicon-ok-sign"
+	   rt-if="this.state.uploadedFiles[key].status == UPLOADED"></i>
+      
+	<i className="status-fail glyphicon glyphicon-remove-sign"
+	   rt-if="this.state.uploadedFiles[key].status == CANCELLED"></i>
+
+	<i className="status-ongoing glyphicon glyphicon-upload"
+	   rt-if="!this.state.uploadedFiles[key].status"></i>
+         
+	{ this.state.uploadedFiles[key].name }
+      </h4>
+      <div class="progressBar" rt-if="!this.state.uploadedFiles[key].status">
+	<Progress completed="{ this.state.uploadedFiles[key].progress }" />
+      </div>
+    </div>
+  </div>
+</div>

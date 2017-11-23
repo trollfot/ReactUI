@@ -6,12 +6,13 @@ import React from 'react';
 import axios from 'axios'
 import Upload from 'rc-upload';
 import download from './download'
-import Progress from 'react-progressbar'
 import {
     ASSETMANAGE_URL,
     getWebsocketURL
 } from '../config';
 import { authHeader } from '../actions/auth'
+import { CANCELLED, UPLOADED } from './states';
+import UploaderTemplate from './uploader.rt'
 
 
 function DownloadAndSave(assetId, fileName) {
@@ -95,7 +96,6 @@ class AssetFilesUploader extends React.Component {
     }
 
     componentDidMount() {
-	console.log(this);
 	this.uploaderProps = {
 	    action: ASSETMANAGE_URL + '/' + this.props.assetId,
 	    headers: {
@@ -116,7 +116,8 @@ class AssetFilesUploader extends React.Component {
 	    name: file.name,
 	    size: file.size,
 	    type: file.type,
-	    progress: 0
+	    progress: 0,
+	    status: null
 	}
 	
 	this.setState({
@@ -125,43 +126,57 @@ class AssetFilesUploader extends React.Component {
     }
 
     onStart(file) {
-	console.log('onStart', file.name);
-	// this.refs.inner.abort(file);
+	// Do something ?
     }
 
-    onProgress(step, file) {
+    close(uid) {
 	let upfiles = this.state.uploadedFiles;
-	upfiles[file.uid]['progress'] = Math.round(step.percent)
+	if (!upfiles[uid].status) {
+	    // CANCEL UPLOAD
+	    let xhrs = this.refs.inner.uploader.reqs;
+	    if (xhrs.hasOwnProperty(uid)) {
+		xhrs[uid].abort();
+		delete xhrs[uid];
+		upfiles[uid].status = CANCELLED;
+	    } else {
+		console.log("Cannot abort this transaction.")
+	    }
+	} else {
+	    // REMOVE LIST ITEM
+            delete upfiles[uid];
+	}
 	this.setState({
 	    uploadedFiles: upfiles
 	})
     }
 
-    onSuccess(file) {
-	console.log('onSuccess', file);
+    onProgress(step, file) {
+	let upfiles = this.state.uploadedFiles;
+	if (upfiles.hasOwnProperty(file.uid)) {
+	    upfiles[file.uid]['progress'] = Math.round(step.percent)
+	    this.setState({
+		uploadedFiles: upfiles
+	    })
+	} else {
+	    console.log('Update of deleted file skipped')
+	}
+    }
+
+    onSuccess(result, file, xhr) {
+	let upfiles = this.state.uploadedFiles;
+	upfiles[file.uid].status = UPLOADED;
+	this.setState({
+	    uploadedFiles: upfiles
+	})
     }
 
     onError(err) {
-	console.log('onError', err);
+	// Do something ?
     }
 
     render() {
-	return (
-	    <div>
-	      <Upload {...this.uploaderProps} ref="inner">
-	        <a className="btn btn-primary">Chose files</a>
-	      </Upload>
-	      {
-		  Object.keys(this.state.uploadedFiles).map((key, index) => ( 
-	          <div key={index}>
-		      {this.state.uploadedFiles[key].name}
-		      <Progress completed={this.state.uploadedFiles[key].progress} />
-	          </div>
-	          ))
-	      }
-	    </div>
-	);
-  }
+	return UploaderTemplate.apply(this);
+    }
 }
 
 
@@ -195,12 +210,19 @@ class AssetFilemanager extends React.Component {
     render() {
 	const { match: { params } } = this.props;
 	return (
-	    <div>
-	       <OnDiskFiles assetId={ params.assetId }
-	                    ondisk_files={this.state.ondisk_files} />
-		
-		<AssetFilesUploader assetId={ params.assetId } />
-	    </div>
+	    <div className="row">
+                <div className="col-xs-12 col-md-3">
+		  <div className="callout callout-container callout-info">
+		    <h3>Upload new files</h3>
+                    <AssetFilesUploader assetId={ params.assetId } />
+		  </div>
+                </div>
+                <div className="col-xs-12 col-md-9">
+		   <h3>Live file manager</h3>
+	           <OnDiskFiles assetId={ params.assetId }
+	                        ondisk_files={this.state.ondisk_files} />
+                </div>
+            </div>
 	 )
     }
 };
