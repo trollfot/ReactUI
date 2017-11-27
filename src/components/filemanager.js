@@ -89,7 +89,8 @@ class OnDiskFiles extends React.Component {
 	this.state = {
 	    websocket: null,
 	    pending_reports: {},
-	    ondisk_files: []
+	    ondisk_files: [],
+	    selected: [],
 	}
     }
 
@@ -175,12 +176,68 @@ class OnDiskFiles extends React.Component {
 	return (text.length > 0 && text.length < 64);
     }
 
+    deleteSelected() {
+	for (let selected of this.state.selected) {
+	    let uid = shortid.generate();
+	    let action = {
+		action: "delete",
+		payload: {
+		    filename: selected
+		},
+		metadata: {
+		    uid: uid
+		}
+	    }
+	    let pending = this.state.pending_reports;
+	    pending[uid] = action
+	    this.state.websocket.send(JSON.stringify(action));
+	    this.setState({
+		pending_reports: pending
+	    })
+	}
+    }
+    
+    select(event, name=null) {
+	if (event.target.checked == true) {
+	    let selected = []
+	    if (name == null) {
+		// we select EVERYTHING
+		for (let obj of this.state.ondisk_files) {
+		    selected.push(obj.name);
+		}
+		this.setState({
+		    selected: selected
+		})
+	    } else {
+		selected.push(name);
+		this.setState({
+		    selected: [...this.state.selected, ...selected]
+		})
+	    }
+	} else {
+	    if (name == null) {
+		// we unselect EVERYTHING
+		this.setState({
+		    selected: []
+		})
+	    } else {
+		let selected = this.state.selected.filter(
+		    file => file !== name)
+		this.setState({
+		    selected: selected
+		})
+	    }
+	}
+    }
+
     render() {
       return (
 	<div id="uploader">
 	  <table className="table table-bordered table-striped">
 	    <thead>
 	      <tr>
+	        <th><input type="checkbox" id="selectAll"
+	                   onChange={(value) => { this.select(value) }}/></th>
 	        <th>Filename</th>
 	        <th>Size</th>
 	        <th>Mimetype</th>
@@ -189,6 +246,9 @@ class OnDiskFiles extends React.Component {
 	    <tbody>
 	      { this.state.ondisk_files.map((file, index) => (
 	        <tr key={index}>
+		  <td><input type="checkbox"
+		  checked={this.state.selected.indexOf(file.name) != -1}
+		  onChange={(value) => { this.select(value, file.name) }} /></td>     
 		  <td>
 		    <a name={file.name}
 		       onClick={() => {
@@ -210,6 +270,7 @@ class OnDiskFiles extends React.Component {
 	      ))}
 	    </tbody>
 	  </table>
+	      { this.state.selected.length > 0 && <button className="btn btn-danger" onClick={ this.deleteSelected.bind(this) }>Delete</button> }
 	</div>
       )
     }
