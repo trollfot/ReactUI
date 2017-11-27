@@ -8,11 +8,10 @@ import Form from 'react-jsonschema-form';
 import ReactLoading from 'react-loading';
 
 import { login } from '../actions/auth'
-import { FLASH_INFO } from '../actions/flash'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-    
+
 class LoginForm extends React.Component {
  
     constructor(props) {

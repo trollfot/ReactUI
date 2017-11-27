@@ -10,8 +10,8 @@ import {
 
 
 const initialState = {
-    logged: false,
-    token: null
+    logged: localStorage.getItem('token') !== null,
+    token: localStorage.getItem('token')
 }
 
 const authReducer = (state = initialState , action) => {

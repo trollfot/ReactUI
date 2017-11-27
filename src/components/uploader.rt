@@ -4,7 +4,7 @@
 <rt-import name="CANCELLED" from="./states" />
 <rt-import name="UPLOADED" from="./states" />
 <div>
-  <Upload rt-props="this.uploaderProps" ref="inner">
+  <Upload rt-props="Object.assign({}, this.uploaderProps)" ref="inner">
     <a className="btn btn-primary">Chose files</a>
   </Upload>
   <div rt-repeat="key in Object.keys(this.state.uploadedFiles)" key="{key}">
