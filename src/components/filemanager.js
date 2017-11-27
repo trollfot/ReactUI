@@ -152,6 +152,7 @@ class OnDiskFiles extends React.Component {
     }
 
     dataChanged(original, data) {
+	let uid = shortid.generate();
 	let action = {
 	    action: "rename",
 	    payload: {
@@ -159,10 +160,9 @@ class OnDiskFiles extends React.Component {
 		to: data.filename
 	    },
 	    metadata: {
-		uid: shortid.generate()
+		uid: uid
 	    }
 	}
-	let uid = shortid.generate();
 	let pending = this.state.pending_reports;
 	pending[uid] = action
 	this.state.websocket.send(JSON.stringify(action));
