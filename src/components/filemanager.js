@@ -100,7 +100,7 @@ class OnDiskFiles extends React.Component {
 	const ws = new WebSocket(ws_location);
 	ws.onmessage = this.handleData.bind(this);
 	this.setState({
-	    websocket: ws,
+	    websocket: ws
 	})
     }
 
@@ -126,7 +126,7 @@ class OnDiskFiles extends React.Component {
 			    let pending = this.state.pending_reports;
 			    delete pending[result.metadata.uid];
 			    this.setState({
-				pending_reports: pending;
+				pending_reports: pending
 			    })
 			}
 		    }
